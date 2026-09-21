@@ -1,6 +1,13 @@
 // chargement des variables d'environnement (.env) : doit rester en premiere ligne
 require('dotenv').config();
 
+
+
+// DNS Google (7al lel mochkla querySrv fel local)
+if (!process.env.RENDER) {
+  require('dns').setServers(['8.8.8.8', '1.1.1.1']);
+}
+
 // importaion du express
 const express=require('express')
 // creation d`un application express
@@ -15,7 +22,9 @@ const fs = require('fs');
 );
 
 const mongoose = require('mongoose');
-mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/appwael');
+mongoose.connect(process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/appwael')
+  .then(() => console.log('MongoDB connecté'))
+  .catch((err) => console.error('Erreur MongoDB:', err.message));
 
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded())
